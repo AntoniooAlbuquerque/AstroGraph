@@ -69,3 +69,36 @@ for nome, propiedades in astros.items():
     G.add_node(nome, **propiedades)
 
 print(f"Grafo inicializado com {G.number_of_nodes()} nos do Sistema Solar.")
+
+# 4. MAPEAMENTO DE RELACIONAMENTOS
+# (Astro_Orbital, Centro_Gravitacional, Distancia_km)
+conexoes = [
+    # Planetas Principais e Planetas Anões que orbitam diretamente o Sol
+    ("Mercurio", "Sol", 57900000), ("Venus", "Sol", 108200000), 
+    ("Terra", "Sol", 149600000), ("Marte", "Sol", 227900000),
+    ("Jupiter", "Sol", 778500000), ("Saturno", "Sol", 1434000000), 
+    ("Urano", "Sol", 2871000000), ("Netuno", "Sol", 4495000000),
+    ("Plutao", "Sol", 5906000000), ("Ceres", "Sol", 413700000),
+    ("Eris", "Sol", 10120000000), ("Haumea", "Sol", 6450000000), 
+    ("Makemake", "Sol", 6850000000),
+    
+    # Satélites orbitando seus respectivos planetas hospedeiros
+    ("Lua", "Terra", 384400), ("Fobos", "Marte", 9377), ("Deimos", "Marte", 23460),
+    ("Io", "Jupiter", 421700), ("Europa", "Jupiter", 670900), 
+    ("Ganimedes", "Jupiter", 1070400), ("Calisto", "Jupiter", 1882700),
+    ("Amalteia", "Jupiter", 181400), ("Himalia", "Jupiter", 11461000),
+    ("Tebe", "Jupiter", 221900), ("Elara", "Jupiter", 11741000),
+    ("Pasife", "Jupiter", 23624000), ("Carme", "Jupiter", 23404000),
+    ("Tita", "Saturno", 1221800), ("Encelado", "Saturno", 238000), 
+    ("Mimas", "Saturno", 185400), ("Reia", "Saturno", 527100),
+    ("Japeto", "Saturno", 3560800), ("Dione", "Saturno", 377400),
+    ("Tetis", "Saturno", 294600), ("Hiperion", "Saturno", 1481100),
+    ("Titania", "Urano", 435900), ("Oberon", "Urano", 583500),
+    ("Umbriel", "Urano", 266000), ("Ariel", "Urano", 191000),
+    ("Tritao", "Netuno", 354800)
+]
+
+for origem, destino, dist in conexoes:
+    G.add_edge(origem, destino, relacao="ORBITA", distancia_km=dist)
+
+print(f"Vinculos orbitais estabelecidos com {G.number_of_edges()} arestas.")
