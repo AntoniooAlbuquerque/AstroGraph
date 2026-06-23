@@ -153,3 +153,36 @@ def remover_astro_do_sistema():
         print("Astro e vinculos removidos.")
     else:
         print("Astro nao encontrado.")
+
+# 4. MOTOR DE RENDERIZAÇÃO INTERATIVA (PYVIS)
+
+def gerar_visualizacao_interativa(nome_arquivo="sistema_solar.html"):
+    net = Network(notebook=False, directed=True, height="850px", width="100%", bgcolor="#141414", font_color="white")
+    net.force_atlas_2based(gravity=-120, central_gravity=0.015, spring_length=150, spring_strength=0.1)
+    
+    for no, dados in G.nodes(data=True):
+        tipo = dados.get('tipo', '')
+        classif = dados.get('classificacao', '')
+        
+        if tipo == "Estrela":
+            cor, tamanho = "#ff0055", 75
+        elif tipo == "Planeta":
+            cor, tamanho = "#00bbf9", 45
+        elif tipo == "Planeta Anao":
+            cor, tamanho = "#00f5d4", 32
+        else:
+            cor, tamanho = "#fee440", 20
+
+        net.add_node(
+            no, label=no, title=f"Tipo: {tipo}\nClassificacao: {classif}",
+            color=cor, size=tamanho,
+            font={'size': 20, 'face': 'Arial', 'color': '#ffffff', 'strokeWidth': 2, 'strokeColor': '#000000'}
+        )
+
+    for origem, destino in G.edges():
+        tipo_origem = G.nodes[origem].get('tipo', '')
+        comprimento = 70 if tipo_origem == "Satelite" else 280
+        net.add_edge(origem, destino, arrows='to', length=comprimento, color={'color': '#555555'}, width=2.0)
+
+    net.save_graph(nome_arquivo)
+    print(f"\nArquivo HTML '{nome_arquivo}' gerado com sucesso!")
