@@ -1,0 +1,164 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 850px;
+                 background-color: #141414;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#ff0055", "font": {"color": "white"}, "id": "Sol", "label": "Sol", "shape": "dot", "size": 75, "title": "Tipo: Estrela\nClassificacao: Ana Amarela"}, {"color": "#00bbf9", "font": {"color": "white"}, "id": "Mercurio", "label": "Mercurio", "shape": "dot", "size": 45, "title": "Tipo: Planeta\nClassificacao: Rochoso"}, {"color": "#00bbf9", "font": {"color": "white"}, "id": "Venus", "label": "Venus", "shape": "dot", "size": 45, "title": "Tipo: Planeta\nClassificacao: Rochoso"}, {"color": "#00bbf9", "font": {"color": "white"}, "id": "Terra", "label": "Terra", "shape": "dot", "size": 45, "title": "Tipo: Planeta\nClassificacao: Rochoso"}, {"color": "#00bbf9", "font": {"color": "white"}, "id": "Marte", "label": "Marte", "shape": "dot", "size": 45, "title": "Tipo: Planeta\nClassificacao: Rochoso"}, {"color": "#00bbf9", "font": {"color": "white"}, "id": "Jupiter", "label": "Jupiter", "shape": "dot", "size": 45, "title": "Tipo: Planeta\nClassificacao: Gigante Gasoso"}, {"color": "#00bbf9", "font": {"color": "white"}, "id": "Saturno", "label": "Saturno", "shape": "dot", "size": 45, "title": "Tipo: Planeta\nClassificacao: Gigante Gasoso"}, {"color": "#00bbf9", "font": {"color": "white"}, "id": "Urano", "label": "Urano", "shape": "dot", "size": 45, "title": "Tipo: Planeta\nClassificacao: Gigante Gelado"}, {"color": "#00bbf9", "font": {"color": "white"}, "id": "Netuno", "label": "Netuno", "shape": "dot", "size": 45, "title": "Tipo: Planeta\nClassificacao: Gigante Gelado"}, {"color": "#00f5d4", "font": {"color": "white"}, "id": "Plutao", "label": "Plutao", "shape": "dot", "size": 32, "title": "Tipo: Planeta Anao\nClassificacao: Plutoide"}, {"color": "#00f5d4", "font": {"color": "white"}, "id": "Ceres", "label": "Ceres", "shape": "dot", "size": 32, "title": "Tipo: Planeta Anao\nClassificacao: Asteroide Grande"}, {"color": "#00f5d4", "font": {"color": "white"}, "id": "Eris", "label": "Eris", "shape": "dot", "size": 32, "title": "Tipo: Planeta Anao\nClassificacao: Plutoide"}, {"color": "#00f5d4", "font": {"color": "white"}, "id": "Haumea", "label": "Haumea", "shape": "dot", "size": 32, "title": "Tipo: Planeta Anao\nClassificacao: Plutoide"}, {"color": "#00f5d4", "font": {"color": "white"}, "id": "Makemake", "label": "Makemake", "shape": "dot", "size": 32, "title": "Tipo: Planeta Anao\nClassificacao: Plutoide"}, {"color": "#fee440", "font": {"color": "white"}, "id": "Lua", "label": "Lua", "shape": "dot", "size": 20, "title": "Tipo: Satelite\nClassificacao: Rochoso"}, {"color": "#fee440", "font": {"color": "white"}, "id": "Fobos", "label": "Fobos", "shape": "dot", "size": 20, "title": "Tipo: Satelite\nClassificacao: Asteroide Capturado"}, {"color": "#fee440", "font": {"color": "white"}, "id": "Deimos", "label": "Deimos", "shape": "dot", "size": 20, "title": "Tipo: Satelite\nClassificacao: Asteroide Capturado"}, {"color": "#fee440", "font": {"color": "white"}, "id": "Io", "label": "Io", "shape": "dot", "size": 20, "title": "Tipo: Satelite\nClassificacao: Galileana"}, {"color": "#fee440", "font": {"color": "white"}, "id": "Europa", "label": "Europa", "shape": "dot", "size": 20, "title": "Tipo: Satelite\nClassificacao: Galileana"}, {"color": "#fee440", "font": {"color": "white"}, "id": "Ganimedes", "label": "Ganimedes", "shape": "dot", "size": 20, "title": "Tipo: Satelite\nClassificacao: Galileana"}, {"color": "#fee440", "font": {"color": "white"}, "id": "Calisto", "label": "Calisto", "shape": "dot", "size": 20, "title": "Tipo: Satelite\nClassificacao: Galileana"}, {"color": "#fee440", "font": {"color": "white"}, "id": "Amalteia", "label": "Amalteia", "shape": "dot", "size": 20, "title": "Tipo: Satelite\nClassificacao: Interna Irregular"}, {"color": "#fee440", "font": {"color": "white"}, "id": "Himalia", "label": "Himalia", "shape": "dot", "size": 20, "title": "Tipo: Satelite\nClassificacao: Externa Irregular"}, {"color": "#fee440", "font": {"color": "white"}, "id": "Tebe", "label": "Tebe", "shape": "dot", "size": 20, "title": "Tipo: Satelite\nClassificacao: Interna Irregular"}, {"color": "#fee440", "font": {"color": "white"}, "id": "Elara", "label": "Elara", "shape": "dot", "size": 20, "title": "Tipo: Satelite\nClassificacao: Externa Irregular"}, {"color": "#fee440", "font": {"color": "white"}, "id": "Pasife", "label": "Pasife", "shape": "dot", "size": 20, "title": "Tipo: Satelite\nClassificacao: Externa Irregular"}, {"color": "#fee440", "font": {"color": "white"}, "id": "Carme", "label": "Carme", "shape": "dot", "size": 20, "title": "Tipo: Satelite\nClassificacao: Externa Irregular"}, {"color": "#fee440", "font": {"color": "white"}, "id": "Tita", "label": "Tita", "shape": "dot", "size": 20, "title": "Tipo: Satelite\nClassificacao: Atmosfera Densa"}, {"color": "#fee440", "font": {"color": "white"}, "id": "Encelado", "label": "Encelado", "shape": "dot", "size": 20, "title": "Tipo: Satelite\nClassificacao: Criovulcanica"}, {"color": "#fee440", "font": {"color": "white"}, "id": "Mimas", "label": "Mimas", "shape": "dot", "size": 20, "title": "Tipo: Satelite\nClassificacao: Corpo Gelado"}, {"color": "#fee440", "font": {"color": "white"}, "id": "Reia", "label": "Reia", "shape": "dot", "size": 20, "title": "Tipo: Satelite\nClassificacao: Corpo Gelado"}, {"color": "#fee440", "font": {"color": "white"}, "id": "Japeto", "label": "Japeto", "shape": "dot", "size": 20, "title": "Tipo: Satelite\nClassificacao: Bicolor"}, {"color": "#fee440", "font": {"color": "white"}, "id": "Dione", "label": "Dione", "shape": "dot", "size": 20, "title": "Tipo: Satelite\nClassificacao: Corpo Gelado"}, {"color": "#fee440", "font": {"color": "white"}, "id": "Tetis", "label": "Tetis", "shape": "dot", "size": 20, "title": "Tipo: Satelite\nClassificacao: Corpo Gelado"}, {"color": "#fee440", "font": {"color": "white"}, "id": "Hiperion", "label": "Hiperion", "shape": "dot", "size": 20, "title": "Tipo: Satelite\nClassificacao: Esponjoso"}, {"color": "#fee440", "font": {"color": "white"}, "id": "Titania", "label": "Titania", "shape": "dot", "size": 20, "title": "Tipo: Satelite\nClassificacao: Corpo Gelado"}, {"color": "#fee440", "font": {"color": "white"}, "id": "Oberon", "label": "Oberon", "shape": "dot", "size": 20, "title": "Tipo: Satelite\nClassificacao: Corpo Gelado"}, {"color": "#fee440", "font": {"color": "white"}, "id": "Umbriel", "label": "Umbriel", "shape": "dot", "size": 20, "title": "Tipo: Satelite\nClassificacao: Corpo Gelado"}, {"color": "#fee440", "font": {"color": "white"}, "id": "Ariel", "label": "Ariel", "shape": "dot", "size": 20, "title": "Tipo: Satelite\nClassificacao: Corpo Gelado"}, {"color": "#fee440", "font": {"color": "white"}, "id": "Tritao", "label": "Tritao", "shape": "dot", "size": 20, "title": "Tipo: Satelite\nClassificacao: Orbita Retrograda"}]);
+                  edges = new vis.DataSet([{"arrows": "to", "color": {"color": "#555555"}, "from": "Mercurio", "length": 280, "to": "Sol", "width": 2.0}, {"arrows": "to", "color": {"color": "#555555"}, "from": "Venus", "length": 280, "to": "Sol", "width": 2.0}, {"arrows": "to", "color": {"color": "#555555"}, "from": "Terra", "length": 280, "to": "Sol", "width": 2.0}, {"arrows": "to", "color": {"color": "#555555"}, "from": "Marte", "length": 280, "to": "Sol", "width": 2.0}, {"arrows": "to", "color": {"color": "#555555"}, "from": "Jupiter", "length": 280, "to": "Sol", "width": 2.0}, {"arrows": "to", "color": {"color": "#555555"}, "from": "Saturno", "length": 280, "to": "Sol", "width": 2.0}, {"arrows": "to", "color": {"color": "#555555"}, "from": "Urano", "length": 280, "to": "Sol", "width": 2.0}, {"arrows": "to", "color": {"color": "#555555"}, "from": "Netuno", "length": 280, "to": "Sol", "width": 2.0}, {"arrows": "to", "color": {"color": "#555555"}, "from": "Plutao", "length": 280, "to": "Sol", "width": 2.0}, {"arrows": "to", "color": {"color": "#555555"}, "from": "Ceres", "length": 280, "to": "Sol", "width": 2.0}, {"arrows": "to", "color": {"color": "#555555"}, "from": "Eris", "length": 280, "to": "Sol", "width": 2.0}, {"arrows": "to", "color": {"color": "#555555"}, "from": "Haumea", "length": 280, "to": "Sol", "width": 2.0}, {"arrows": "to", "color": {"color": "#555555"}, "from": "Makemake", "length": 280, "to": "Sol", "width": 2.0}, {"arrows": "to", "color": {"color": "#555555"}, "from": "Lua", "length": 70, "to": "Terra", "width": 2.0}, {"arrows": "to", "color": {"color": "#555555"}, "from": "Fobos", "length": 70, "to": "Marte", "width": 2.0}, {"arrows": "to", "color": {"color": "#555555"}, "from": "Deimos", "length": 70, "to": "Marte", "width": 2.0}, {"arrows": "to", "color": {"color": "#555555"}, "from": "Io", "length": 70, "to": "Jupiter", "width": 2.0}, {"arrows": "to", "color": {"color": "#555555"}, "from": "Europa", "length": 70, "to": "Jupiter", "width": 2.0}, {"arrows": "to", "color": {"color": "#555555"}, "from": "Ganimedes", "length": 70, "to": "Jupiter", "width": 2.0}, {"arrows": "to", "color": {"color": "#555555"}, "from": "Calisto", "length": 70, "to": "Jupiter", "width": 2.0}, {"arrows": "to", "color": {"color": "#555555"}, "from": "Amalteia", "length": 70, "to": "Jupiter", "width": 2.0}, {"arrows": "to", "color": {"color": "#555555"}, "from": "Himalia", "length": 70, "to": "Jupiter", "width": 2.0}, {"arrows": "to", "color": {"color": "#555555"}, "from": "Tebe", "length": 70, "to": "Jupiter", "width": 2.0}, {"arrows": "to", "color": {"color": "#555555"}, "from": "Elara", "length": 70, "to": "Jupiter", "width": 2.0}, {"arrows": "to", "color": {"color": "#555555"}, "from": "Pasife", "length": 70, "to": "Jupiter", "width": 2.0}, {"arrows": "to", "color": {"color": "#555555"}, "from": "Carme", "length": 70, "to": "Jupiter", "width": 2.0}, {"arrows": "to", "color": {"color": "#555555"}, "from": "Tita", "length": 70, "to": "Saturno", "width": 2.0}, {"arrows": "to", "color": {"color": "#555555"}, "from": "Encelado", "length": 70, "to": "Saturno", "width": 2.0}, {"arrows": "to", "color": {"color": "#555555"}, "from": "Mimas", "length": 70, "to": "Saturno", "width": 2.0}, {"arrows": "to", "color": {"color": "#555555"}, "from": "Reia", "length": 70, "to": "Saturno", "width": 2.0}, {"arrows": "to", "color": {"color": "#555555"}, "from": "Japeto", "length": 70, "to": "Saturno", "width": 2.0}, {"arrows": "to", "color": {"color": "#555555"}, "from": "Dione", "length": 70, "to": "Saturno", "width": 2.0}, {"arrows": "to", "color": {"color": "#555555"}, "from": "Tetis", "length": 70, "to": "Saturno", "width": 2.0}, {"arrows": "to", "color": {"color": "#555555"}, "from": "Hiperion", "length": 70, "to": "Saturno", "width": 2.0}, {"arrows": "to", "color": {"color": "#555555"}, "from": "Titania", "length": 70, "to": "Urano", "width": 2.0}, {"arrows": "to", "color": {"color": "#555555"}, "from": "Oberon", "length": 70, "to": "Urano", "width": 2.0}, {"arrows": "to", "color": {"color": "#555555"}, "from": "Umbriel", "length": 70, "to": "Urano", "width": 2.0}, {"arrows": "to", "color": {"color": "#555555"}, "from": "Ariel", "length": 70, "to": "Urano", "width": 2.0}, {"arrows": "to", "color": {"color": "#555555"}, "from": "Tritao", "length": 70, "to": "Netuno", "width": 2.0}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "forceAtlas2Based": {
+            "avoidOverlap": 0,
+            "centralGravity": 0.015,
+            "damping": 0.4,
+            "gravitationalConstant": -120,
+            "springConstant": 0.1,
+            "springLength": 150
+        },
+        "solver": "forceAtlas2Based",
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

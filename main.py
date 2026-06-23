@@ -186,3 +186,34 @@ def gerar_visualizacao_interativa(nome_arquivo="sistema_solar.html"):
 
     net.save_graph(nome_arquivo)
     print(f"\nArquivo HTML '{nome_arquivo}' gerado com sucesso!")
+
+
+# 5. LOOP DO MENU PRINCIPAL
+
+if __name__ == "__main__":
+    while True:
+        print("\n--- MENU ---")
+        print("1. Consultar Astro")
+        print("2. Adicionar Astro")
+        print("3. Adicionar Orbita")
+        print("4. Remover Astro")
+        print("5. Gerar HTML")
+        print("6. Sair")
+        
+        opcao = input("Opcao: ").strip()
+        
+        if opcao == "1":
+            consultar_astro_e_orbitas()
+        elif opcao == "2":
+            adicionar_novo_astro()
+        elif opcao == "3":
+            adicionar_nova_orbita()
+        elif opcao == "4":
+            remover_astro_do_sistema()
+        elif opcao == "5":
+            gerar_visualizacao_interativa()
+        elif opcao == "6":
+            print("Saindo...")
+            break
+        else:
+            print("Opcao invalida.")
