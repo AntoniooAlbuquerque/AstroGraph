@@ -102,3 +102,54 @@ for origem, destino, dist in conexoes:
     G.add_edge(origem, destino, relacao="ORBITA", distancia_km=dist)
 
 print(f"Vinculos orbitais estabelecidos com {G.number_of_edges()} arestas.")
+
+# 3. OPERAÇÕES DE MANIPULAÇÃO SIMPLIFICADAS
+
+def consultar_astro_e_orbitas():
+    nome = input("Astro para busca: ").strip()
+    if G.has_node(nome):
+        dados = G.nodes[nome]
+        print(f"\nNome: {nome}")
+        print(f"Tipo: {dados.get('tipo')}")
+        print(f"Classificacao: {dados.get('classificacao')}")
+        
+        # Exibe o que este astro orbita
+        for sucessor in G.successors(nome):
+            aresta = G.get_edge_data(nome, sucessor)
+            print(f"Orbita: {sucessor} (Distancia: {aresta['distancia_km']} km)")
+            
+        # Exibe quem orbita este astro
+        for predecessor in G.predecessors(nome):
+            print(f"Orbitado por: {predecessor}")
+    else:
+        print("Astro nao encontrado.")
+
+def adicionar_novo_astro():
+    nome = input("Nome do astro: ").strip()
+    tipo = input("Tipo: ").strip()
+    classificacao = input("Classificacao: ").strip()
+    
+    G.add_node(nome, tipo=tipo, classificacao=classificacao)
+    print("Astro adicionado.")
+
+def adicionar_nova_orbita():
+    astro_orbital = input("Astro orbital: ").strip()
+    centro_gravitacional = input("Centro gravitacional: ").strip()
+    
+    if G.has_node(astro_orbital) and G.has_node(centro_gravitacional):
+        try:
+            dist = int(input("Distancia (km): "))
+        except ValueError:
+            dist = 0
+        G.add_edge(astro_orbital, centro_gravitacional, relacao="ORBITA", distancia_km=dist)
+        print("Orbita adicionada.")
+    else:
+        print("Erro: Um ou ambos os astros nao existem.")
+
+def remover_astro_do_sistema():
+    nome = input("Nome do astro para remover: ").strip()
+    if G.has_node(nome):
+        G.remove_node(nome)
+        print("Astro e vinculos removidos.")
+    else:
+        print("Astro nao encontrado.")
